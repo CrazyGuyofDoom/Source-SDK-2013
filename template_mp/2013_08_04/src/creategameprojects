@@ -1,0 +1,4 @@
+#!/bin/bash
+
+devtools/bin/vpc /template_mp +game /mksln games
+

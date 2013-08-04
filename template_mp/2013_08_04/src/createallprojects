@@ -1,0 +1,4 @@
+#!/bin/bash
+
+devtools/bin/vpc /template_mp +everything /mksln everything
+
