@@ -1,0 +1,101 @@
+// sample animation script
+//
+//
+// commands:
+//	Animate <panel name> <variable> <target value> <interpolator> <start time> <duration>
+//		variables:
+//			FgColor
+//			BgColor
+//			Position
+//			Size
+//			Blur		(hud panels only)
+//			TextColor	(hud panels only)
+//			Ammo2Color	(hud panels only)
+//			Alpha		(hud weapon selection only)
+//			SelectionAlpha  (hud weapon selection only)
+//			TextScan	(hud weapon selection only)
+//
+//		interpolator:
+//			Linear
+//			Accel - starts moving slow, ends fast
+//			Deaccel - starts moving fast, ends slow
+//
+//	RunEvent <event name> <start time>
+//		starts another even running at the specified time
+//
+//	StopEvent <event name> <start time>
+//		stops another event that is current running at the specified time
+//
+//	StopAnimation <panel name> <variable> <start time>
+//		stops all animations refering to the specified variable in the specified panel
+//
+//	StopPanelAnimations <panel name> <start time>
+//		stops all active animations operating on the specified panel
+//
+//
+// Useful game console commands:
+//	cl_Animationinfo <hudelement name> or <panelname> 
+//		displays all the animatable variables for the hud element
+//
+
+event CountdownTimerAboveWarning
+{
+	StopEvent	CountdownTimerLoop  0.0
+	StopEvent	CountdownTimerPulse 0.0
+	StopEvent	CountdownTimerLow   0.0
+
+	Animate	HudCounter	BgColor	"BgColor"	Linear	0.0	0.0
+	
+	Animate	HudCounter	TextColor "FgColor" Linear 0.0 0.04
+	Animate	HudCounter	FgColor   "FgColor" Linear 0.0 0.03
+	
+	Animate	HudCounter		Blur		"3"			Linear	0.0		0.1
+	Animate	HudCounter		Blur		"0"			Deaccel	0.1		2.0
+}
+
+event CountdownTimerBelowWarning
+{
+	Animate HudCounter	FgColor		"BrightFg"	Linear	0.0		0.25
+	Animate HudCounter	FgColor		"FgColor"		Linear	0.3		0.75
+	
+	Animate HudCounter		Blur		"3"			Linear	0.0		0.1
+	Animate HudCounter		Blur		"0"			Deaccel	0.1		2.0
+}
+
+event CountdownTimerLow
+{
+	StopEvent CountdownTimerPulse	0.0
+	StopEvent CountdownTimerLoop	0.0	
+	
+	Animate HudCounter	BgColor		"DamagedBg"		Linear	0.0		0.1
+	Animate HudCounter	BgColor		"BgColor"		Deaccel	0.1		1.75
+	
+	Animate HudCounter	FgColor		"BrightFg"	Linear	0.0		0.2
+	Animate HudCounter	FgColor		"DamagedFg"		Linear	0.2		1.2
+	
+	Animate HudCounter TextColor		"BrightFg"	Linear	0.0		0.1
+	Animate HudCounter	TextColor		"DamagedFg"		Linear	0.1		1.2
+	
+	Animate HudCounter		Blur		"5"			Linear	0.0		0.1
+	Animate HudCounter		Blur		"3"			Deaccel	0.1		0.9
+
+	RunEvent CountdownTimerPulse	1.0
+}
+
+event CountdownTimerPulse
+{
+	Animate HudCounter		Blur		"5"			Linear	0.0		0.1
+	Animate HudCounter		Blur		"2"			Deaccel	0.1		0.8
+	Animate HudCounter		TextColor	"BrightDamagedFg"	Linear	0.0		0.1
+	Animate HudCounter		TextColor	"DamagedFg"		Deaccel	0.1		0.8
+	Animate HudCounter		BgColor	"100 0 0 80"		Linear	0.0		0.1
+	Animate HudCounter		BgColor	"BgColor"		Deaccel	0.1		0.8
+
+	RunEvent CountdownTimerLoop	0.8
+}
+
+// call to loop CountdownTimerPulse
+event CountdownTimerLoop
+{
+	RunEvent CountdownTimerPulse 0.0
+}

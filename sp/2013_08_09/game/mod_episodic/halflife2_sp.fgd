@@ -1,0 +1,57 @@
+//====== Copyright © 1996-2005, Valve Corporation, All rights reserved. =======
+//
+// Purpose: Half-Life 2 game definition file (.fgd) 
+//
+//=============================================================================
+
+@include "base.fgd"
+@include "halflife2.fgd"
+
+//===================================================================================
+// env_hudcounter
+//
+@PointClass base(Targetname) size(-8 -8 -8, 8 8 8) = env_hudcounter : 
+	"An entity that displays a counter on the player's screen."
+[
+	spawnflags(flags) =
+	[
+		1: "All Players" : 0
+	]
+	
+	start_on(choices) : "Start Enabled?" : 0 =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+
+	start_active(choices) : "Start Active?" : 0 =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+	starttime(float) : "Start Time" : 60 : "Default Start time."
+	warntime(float) : "Warn Time" : 30 : "Remaining time below this limit will be displayed in red."
+	
+
+	// Inputs
+	input ResetCounter(void) : "Reset counter time."
+	input StartCounter(void) : "Start counter."
+	input StopCounter(void) : "Stop counter."
+	input PauseCounter(void) : "Pause counter."
+	input ResumeCounter(void) : "Resume counter."
+	input SetCounter(float) : "Set counter time."
+	input ShowHudCounter(void) : "Shows the HUD counter."
+	input HideHudCounter(void) : "Hides the HUD counter."
+	
+	// Outputs
+	output OnCounterSet(void) : "Fired whenever the counter is set."
+	output OnCounterReset(void) : "Fired whenever the counter is reset."
+	output OnCounterStarted(void) : "Fired whenever the counter has started."
+	output OnCounterStopped(void) : "Fired whenever the counter has started."
+	output OnCounterExpired(void) : "Fired whenever the counter is exhausted."
+	output OnCounterShown(void) : "Fired whenever the counter is displayed."
+	output OnCounterHidden(void) : "Fired whenever the counter is hidden."
+	output OnCounterPaused(void) : "Fired whenever the counter is paused."
+	output OnCounterResumed(void) : "Fired whenever the counter was resumed."
+
+]
